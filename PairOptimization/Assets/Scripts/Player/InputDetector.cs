@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputDetector : MonoBehaviour
+public class InputDetector : OnOffEnum
 {
     public PlayerInputActions playerControls;
 
@@ -16,9 +16,13 @@ public class InputDetector : MonoBehaviour
     public event InputDelegate OnMove;
     public event InputDelegate OnFire;
 
+    State detectorState;
+
     #region Unity Methods
     void Awake()
     {
+        detectorState = State.Off;
+
         playerControls = new PlayerInputActions();
     }
 
@@ -44,8 +48,11 @@ public class InputDetector : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Rotate();
+        if(detectorState == State.On)
+        {
+            Move();
+            Rotate();
+        }
     }
     #endregion
 
@@ -66,6 +73,14 @@ public class InputDetector : MonoBehaviour
     void Fire(InputAction.CallbackContext context)
     {
         OnFire?.Invoke();
+    }
+    #endregion
+
+    #region State Modifiers
+    // Turns on/off input detection. detectorState does not toggle Fire detection.
+    public void ToggleGameplayInput(bool turnOn)
+    {
+        detectorState = ToggleState(turnOn);
     }
     #endregion
 }

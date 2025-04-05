@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : PlayerShooting
 {
-    public InputDetector inputDetector;
-
     [Space(20)]
     public float moveSpeed = 3f;
     public float rotateSpeed = 3f;
